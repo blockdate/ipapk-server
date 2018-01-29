@@ -42,7 +42,7 @@ program
     .option('-h, --host <host>', 'set host for server (defaults is your LAN ip)')
     .parse(process.argv);
 
-var port = program.port || 1234;
+var port = program.port || 9091;
 
 var ipAddress = program.host || underscore
   .chain(require('os').networkInterfaces())
@@ -104,7 +104,7 @@ excuteDB("CREATE TABLE IF NOT EXISTS info (\
 process.exit = exit
 
 // CLI
-var basePath = "https://{0}:{1}".format(ipAddress, port);
+var basePath = "http://{0}:{1}".format(ipAddress, port);
 if (!exit.exited) {
   main();
 }
@@ -139,17 +139,17 @@ function main() {
   }
 
   var options = {
-    key: key,
-    cert: cert
+    // key: key,
+    // cert: cert
   };
 
   var app = express();
-  app.use('/cer', express.static(globalCerFolder));
-  app.use('/', express.static(path.join(__dirname,'web')));
-  app.use('/ipa', express.static(ipasDir));
-  app.use('/apk', express.static(apksDir));
-  app.use('/icon', express.static(iconsDir));
-  app.get(['/apps/:platform', '/apps/:platform/:page'], function(req, res, next) {
+  app.use(['/appstore/cer', '/cer'], express.static(globalCerFolder));
+  app.use(['/appstore', '/'], express.static(path.join(__dirname,'web')));
+  app.use(['/appstore/ipa', '/ipa'], express.static(ipasDir));
+  app.use(['/appstore/apk', '/apk'], express.static(apksDir));
+  app.use(['/appstore/icon', '/icon'], express.static(iconsDir));
+  app.get(['/appstore/apps/:platform', '/apps/:platform', '/appstore/apps/:platform/:page', '/apps/:platform/:page'], function(req, res, next) {
   	  res.set('Access-Control-Allow-Origin','*');
       res.set('Content-Type', 'application/json');
       var page = parseInt(req.params.page ? req.params.page : 1);
@@ -164,7 +164,7 @@ function main() {
       }
   });
 
-  app.get(['/apps/:platform/:bundleID', '/apps/:platform/:bundleID/:page'], function(req, res, next) {
+  app.get(['/appstore/apps/:platform/:bundleID','/apps/:platform/:bundleID', '/apps/:platform/:bundleID/:page', '/appstore/apps/:platform/:bundleID/:page'], function(req, res, next) {
   	  res.set('Access-Control-Allow-Origin','*');
       res.set('Content-Type', 'application/json');
       var page = parseInt(req.params.page ? req.params.page : 1);
@@ -179,7 +179,7 @@ function main() {
       }
   });
 
-  app.get('/plist/:guid', function(req, res) {
+  app.get(['/appstore/plist/:guid','/plist/:guid'], function(req, res) {
     queryDB("select name,bundleID from info where guid=?", [req.params.guid], function(error, result) {
       if (result) {
         fs.readFile(path.join(__dirname, 'templates') + '/template.plist', function(err, data) {
@@ -201,7 +201,7 @@ function main() {
     })
   });
 
-  app.post('/upload', function(req, res) {
+  app.post(['/appstore/upload', '/upload'], function(req, res) {
     var form = new multiparty.Form();
     form.parse(req, function(err, fields, files) {
       if (err) {
@@ -233,7 +233,8 @@ function main() {
     });
   });
 
-  https.createServer(options, app).listen(port);
+  // https.createServer(options, app).listen(port);
+  app.listen(port);
 }
 
 function errorHandler(error, res) {
@@ -243,11 +244,11 @@ function errorHandler(error, res) {
 
 function mapIconAndUrl(result) {
   var items = result.map(function(item) {
-    item.icon = "{0}/icon/{1}.png".format(basePath, item.guid);
+    item.icon = "{0}/appstore/icon/{1}.png".format(basePath, item.guid);
     if (item.platform === 'ios') {
-      item.url = "itms-services://?action=download-manifest&url={0}/plist/{1}".format(basePath, item.guid);
+      item.url = "itms-services://?action=download-manifest&url={0}/appstore/plist/{1}".format(basePath, item.guid);
     } else if (item.platform === 'android') {
-      item.url = "{0}/apk/{1}.apk".format(basePath, item.guid);
+      item.url = "{0}/appstore/apk/{1}.apk".format(basePath, item.guid);
     }
     return item;
   })

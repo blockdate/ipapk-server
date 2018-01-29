@@ -13,7 +13,7 @@ function switchPlatform(platform) {
 function loadApps(){
 	appsPage++;
 	$.ajax({
-		url:"/apps/"+currentPlatform+"/"+appsPage,
+		url:"/appstore/apps/"+currentPlatform+"/"+appsPage,
 		success: function(data){
 			if (data.error) {
 				return;
@@ -63,7 +63,7 @@ function loadMoreVersion(el) {
 	var bundleID = thisVersionInfo.attr('bundleID');
 	var page = thisVersionInfo.attr('nextPage');
 	$.ajax({
-		url:"/apps/"+currentPlatform+"/"+bundleID+"/"+page,	
+		url:"/appstore/apps/"+currentPlatform+"/"+bundleID+"/"+page,	
 		success: function(version){
 			if (version.error) {
 				return;
