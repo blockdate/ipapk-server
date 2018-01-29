@@ -105,7 +105,7 @@ process.exit = exit
 
 // CLI
 var basePath = "http://{0}:{1}".format(ipAddress, port);
-var basePathHTTPS = "https://{0}:{1}".format(ipAddress, port);
+var basePathHTTPS = "https://{0}".format(ipAddress);
 if (!exit.exited) {
   main();
 }
