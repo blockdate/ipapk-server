@@ -40,9 +40,11 @@
 <div class="wrapper">
 	<header class="header">
     	<h2>ipapk-server</h2><br>
-        <a class="attention" href="/appstore/cer/myCA.cer">如果出现【无法验证服务器身份】或【无法链接到】，请点击此处链接安装证书</a>
-        <p>iOS 10.3后 默认不信任安装的证书，需要手动信任。</p>
-        <span>设置 > 通用 > 关于 > 证书信任设置 > 对需要的证书启用完全信任</span>
+        <p><span style="color:red;">初次使用</span>或者出现<span style="color:red;">【无法验证服务器身份】</span>或<span style="color:red;">【无法链接到】</span>时请进行下面两步操作：</p>
+        <!--<a class="attention" href="/appstore/cer/myCA.cer">如果出现【无法验证服务器身份】或【无法链接到】，请点击此处链接安装证书</a>-->
+        <p class="attention" >1.安装证书:<a href="/appstore/cer/myCA.cer">请点击此处链接安装证书</a></p>
+        <p class="attention" >2.<span style="color:red;">iOS 10.3</span>之后设备进行如下设置:</p>
+        <span>设置 > 通用 > 关于本机 > 证书信任设置(最底部) > 对需要的证书(mobile.ofo.net)启用完全信任</span>
     </header>
     <div class="app_wrapper">
         <ul class="platform_wrapper"><span><span class="platform_title selected_title">iOS</span><span class="platform_title">Android</span></span>
