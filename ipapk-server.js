@@ -248,8 +248,10 @@ function mapIconAndUrl(result) {
     item.icon = "{0}/appstore/icon/{1}.png".format(basePath, item.guid);
     if (item.platform === 'ios') {
       item.url = "itms-services://?action=download-manifest&url={0}/appstore/plist/{1}".format(basePathHTTPS, item.guid);
+      item.appurl = basePathHTTPS + "/appstore/ipa/" + item.guid + ".ipa"
     } else if (item.platform === 'android') {
       item.url = "{0}/appstore/apk/{1}.apk".format(basePath, item.guid);
+      item.appurl = basePathHTTPS + "/appstore/apk/" + item.guid + ".apk"
     }
     return item;
   })
