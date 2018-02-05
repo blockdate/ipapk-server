@@ -34,7 +34,7 @@ function loadApps(){
 							'<br><span class="changelog">'+(val.changelog ? val.changelog : "")+'</span>'+
 						'</div>'+
 						'<a class="down_btn" href="'+val.url+'">下载</a>'+
-                    	'<a class="link_btn" href="'+val.appurl+'">ipa</a>'+
+                    	// '<a class="link_btn" href="'+val.appurl+'">ipa</a>'+
 					'</div>'+
 					'<ul class="all_version" bundleID="'+val.bundleID+'" nextPage="1"></ul>'+
 				'</li>';
@@ -120,7 +120,7 @@ $(function(){
 			$(this).siblings('li').removeClass('select');
 			$(this).addClass('select');
 			$(this).parent().siblings().children('.down_btn').attr('href',$(this).attr('data'));
-			$(this).parent().siblings().children('.link_btn').attr('href',$(this).attr('link'));
+			// $(this).parent().siblings().children('.link_btn').attr('href',$(this).attr('link'));
 			var app_infoNode = $(this).parent().siblings().children('.info_box');
 			app_infoNode.find('.app_name').text($(this).find('.app_name').text())
 			app_infoNode.find('.version_number').text($(this).find('.version_number').text())
